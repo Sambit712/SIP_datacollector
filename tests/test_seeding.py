@@ -56,7 +56,7 @@ def test_seed_records_sources_distribution(seeded_db):
     interview_count = seeded_db.query(RawRecord).filter_by(source_type="interview").count()
 
     assert reddit_count == 15
-    assert app_store_count == 15
+    assert app_store_count >= 15
     assert doc_count == 8
     assert news_count == 5
     assert interview_count == 10

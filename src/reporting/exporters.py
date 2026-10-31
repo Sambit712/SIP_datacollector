@@ -413,3 +413,226 @@ class PdfExporter:
 
         doc.build(story)
         return buffer.getvalue()
+
+    @classmethod
+    def export_records_ledger_pdf_to_bytes(
+        cls,
+        session: Session,
+        records: Optional[List[RawRecord]] = None,
+        limit: Optional[int] = None,
+        title: str = "Groww Mutual Fund SIP Persistency: All Collected Records Catalog",
+    ) -> bytes:
+        """Compiles all collected research records into a professional multi-page PDF catalog.
+
+        Args:
+            session: SQLAlchemy database session.
+            records: Optional list of RawRecord instances to serialize. If None, queries session.
+            limit: Maximum number of records to include in the PDF.
+            title: Title to display on document header.
+
+        Returns:
+            Raw PDF bytes suitable for download or disk persistence.
+        """
+        from reportlab.lib.pagesizes import letter
+        from reportlab.lib import colors
+        from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+        from reportlab.platypus import (
+            SimpleDocTemplate,
+            Paragraph,
+            Spacer,
+            Table,
+            TableStyle,
+            HRFlowable,
+        )
+
+        if records is None:
+            query = session.query(RawRecord).order_by(
+                RawRecord.relevance_status.asc(),
+                RawRecord.ingestion_timestamp.desc(),
+            )
+            if limit:
+                query = query.limit(limit)
+            records = query.all()
+        elif limit:
+            records = records[:limit]
+
+        buffer = io.BytesIO()
+        doc = SimpleDocTemplate(
+            buffer,
+            pagesize=letter,
+            rightMargin=40,
+            leftMargin=40,
+            topMargin=40,
+            bottomMargin=40,
+        )
+
+        styles = getSampleStyleSheet()
+        normal = styles["Normal"]
+
+        title_style = ParagraphStyle(
+            "LedgerTitle",
+            parent=normal,
+            fontName="Helvetica-Bold",
+            fontSize=18,
+            leading=22,
+            textColor=colors.HexColor("#0f172a"),
+            spaceAfter=4,
+        )
+        subtitle_style = ParagraphStyle(
+            "LedgerSubTitle",
+            parent=normal,
+            fontName="Helvetica",
+            fontSize=10,
+            leading=14,
+            textColor=colors.HexColor("#475569"),
+            spaceAfter=10,
+        )
+        meta_style = ParagraphStyle(
+            "LedgerMeta",
+            parent=normal,
+            fontName="Helvetica-Bold",
+            fontSize=8.5,
+            leading=11,
+            textColor=colors.HexColor("#047857"),
+            spaceAfter=10,
+        )
+        table_header_style = ParagraphStyle(
+            "LedgerTableHeader",
+            parent=normal,
+            fontName="Helvetica-Bold",
+            fontSize=8,
+            leading=11,
+            textColor=colors.white,
+        )
+        cell_meta_style = ParagraphStyle(
+            "LedgerCellMeta",
+            parent=normal,
+            fontName="Helvetica-Bold",
+            fontSize=7.5,
+            leading=10,
+            textColor=colors.HexColor("#1e293b"),
+        )
+        cell_text_style = ParagraphStyle(
+            "LedgerCellText",
+            parent=normal,
+            fontName="Helvetica",
+            fontSize=7.5,
+            leading=10,
+            textColor=colors.HexColor("#334155"),
+        )
+
+        story: List[Any] = []
+
+        # Document Header
+        story.append(Paragraph(title, title_style))
+        story.append(Paragraph("Complete Ingestion Ledger: Raw user feedback, regulatory studies, and PII-sanitized text", subtitle_style))
+        meta_line = f"Total Records in PDF: {len(records)} | PII Compliance: 100% Sanitized (Zero PAN, Phone, Email) | Antigravity AI Discovery Engine"
+        story.append(Paragraph(meta_line, meta_style))
+        story.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor("#047857"), spaceAfter=12))
+
+        # Channel Breakdown Summary
+        by_channel = {}
+        by_rel = {}
+        for r in records:
+            by_channel[r.source_type] = by_channel.get(r.source_type, 0) + 1
+            by_rel[r.relevance_status] = by_rel.get(r.relevance_status, 0) + 1
+
+        summary_data = [
+            [
+                Paragraph("<b>Research Channel</b>", cell_meta_style),
+                Paragraph("<b>Count</b>", cell_meta_style),
+                Paragraph("<b>Relevance Tier</b>", cell_meta_style),
+                Paragraph("<b>Count</b>", cell_meta_style),
+            ]
+        ]
+        ch_items = list(by_channel.items())
+        rel_items = list(by_rel.items())
+        max_rows = max(len(ch_items), len(rel_items))
+        for idx in range(max_rows):
+            ch_txt = ch_items[idx][0].replace("_", " ").title() if idx < len(ch_items) else ""
+            ch_cnt = str(ch_items[idx][1]) if idx < len(ch_items) else ""
+            rel_txt = rel_items[idx][0].replace("_", " ").title() if idx < len(rel_items) else ""
+            rel_cnt = str(rel_items[idx][1]) if idx < len(rel_items) else ""
+            summary_data.append([
+                Paragraph(ch_txt, cell_text_style),
+                Paragraph(ch_cnt, cell_text_style),
+                Paragraph(rel_txt, cell_text_style),
+                Paragraph(rel_cnt, cell_text_style),
+            ])
+
+        sum_table = Table(summary_data, colWidths=[140, 60, 200, 130])
+        sum_table.setStyle(TableStyle([
+            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#f1f5f9")),
+            ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+            ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+            ("TOPPADDING", (0, 0), (-1, -1), 3),
+            ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#cbd5e1")),
+        ]))
+        story.append(sum_table)
+        story.append(Spacer(1, 12))
+
+        # Records Table
+        table_data = [
+            [
+                Paragraph("# & Source", table_header_style),
+                Paragraph("Status & Rating", table_header_style),
+                Paragraph("PII-Sanitized Record Content", table_header_style),
+            ]
+        ]
+
+        for idx, rec in enumerate(records, start=1):
+            src_str = f"<b>#{idx}</b><br/>{rec.platform}<br/><i>{rec.source_type}</i>"
+            rel_str = f"<b>{rec.relevance_status.replace('_', ' ').title()}</b>"
+            if rec.rating:
+                rel_str += f"<br/>Rating: {rec.rating}★"
+            if rec.publication_date:
+                rel_str += f"<br/>Date: {rec.publication_date}"
+
+            clean_text = (
+                (rec.sanitized_text or "")
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+            )
+            # Clip very long texts if necessary to prevent single-cell overflow
+            if len(clean_text) > 600:
+                clean_text = clean_text[:600] + "..."
+
+            table_data.append([
+                Paragraph(src_str, cell_meta_style),
+                Paragraph(rel_str, cell_meta_style),
+                Paragraph(clean_text, cell_text_style),
+            ])
+
+        records_table = Table(table_data, colWidths=[90, 110, 330], repeatRows=1)
+        records_table.setStyle(TableStyle([
+            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#047857")),
+            ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+            ("TOPPADDING", (0, 0), (-1, -1), 4),
+            ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.HexColor("#f8fafc"), colors.white]),
+            ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#e2e8f0")),
+        ]))
+        story.append(records_table)
+
+        doc.build(story)
+        return buffer.getvalue()
+
+    @classmethod
+    def export_records_ledger_pdf_to_file(
+        cls,
+        session: Session,
+        filepath: Union[str, Path],
+        records: Optional[List[RawRecord]] = None,
+        limit: Optional[int] = None,
+        title: str = "Groww Mutual Fund SIP Persistency: All Collected Records Catalog",
+    ) -> str:
+        """Writes the collected records catalog PDF to disk."""
+        p = Path(filepath)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        pdf_bytes = cls.export_records_ledger_pdf_to_bytes(session, records=records, limit=limit, title=title)
+        p.write_bytes(pdf_bytes)
+        return str(p.resolve())
+

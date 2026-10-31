@@ -265,6 +265,18 @@ class TestPdfExporter:
         assert Path(out).exists()
         assert Path(out).stat().st_size > 2000
 
+    def test_export_records_ledger_pdf_to_bytes(self, populated_session):
+        pdf_bytes = PdfExporter.export_records_ledger_pdf_to_bytes(populated_session)
+        assert isinstance(pdf_bytes, bytes)
+        assert len(pdf_bytes) > 1000
+        assert pdf_bytes.startswith(b"%PDF-")
+
+    def test_export_records_ledger_pdf_to_file(self, populated_session, tmp_path):
+        out_file = tmp_path / "records_ledger.pdf"
+        path = PdfExporter.export_records_ledger_pdf_to_file(populated_session, out_file)
+        assert Path(path).exists()
+        assert Path(path).stat().st_size > 1000
+
 
 # ==============================================================================
 # EvidenceLogExporter Tests
@@ -297,6 +309,17 @@ class TestEvidenceLogExporter:
         exporter = EvidenceLogExporter(populated_session)
         records = exporter.build_evidence_records()
         assert EvidenceLogExporter.verify_privacy_compliance(records) is True
+
+    def test_export_to_pdf_bytes_and_file(self, populated_session, tmp_path):
+        exporter = EvidenceLogExporter(populated_session)
+        pdf_bytes = exporter.export_to_pdf_bytes()
+        assert isinstance(pdf_bytes, bytes)
+        assert pdf_bytes.startswith(b"%PDF-")
+
+        out_file = tmp_path / "evidence_audit.pdf"
+        saved = exporter.export_to_file(out_file, file_format="pdf")
+        assert Path(saved).exists()
+        assert Path(saved).stat().st_size > 1000
 
     def test_privacy_compliance_raises_on_leakage(self):
         leaked_records = [

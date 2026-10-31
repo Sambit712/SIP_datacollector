@@ -5,6 +5,7 @@ import streamlit as st
 from sqlalchemy.orm import Session
 
 from src.models.database import RawRecord, ExtractedIssue, IssueCategory
+from src.reporting.exporters import PdfExporter
 
 
 def render(session: Session, filters: dict):
@@ -39,7 +40,27 @@ def render(session: Session, filters: dict):
     if search_kw:
         records = [r for r in records if search_kw.lower() in (r.sanitized_text or "").lower() or search_kw.lower() in (r.title or "").lower()]
 
-    st.write(f"Showing **{len(records)}** records:")
+    col_info, col_export = st.columns([3, 1])
+    with col_info:
+        st.write(f"Showing **{len(records)}** records:")
+    with col_export:
+        if st.button("📕 Export Records (PDF)", key="btn_export_records_pdf", use_container_width=True):
+            with st.spinner("Generating PDF..."):
+                st.session_state["explorer_pdf_bytes"] = PdfExporter.export_records_ledger_pdf_to_bytes(
+                    session,
+                    records=records,
+                    limit=500,
+                    title="Groww SIP Ingestion: Records Catalog",
+                )
+
+    if "explorer_pdf_bytes" in st.session_state:
+        st.download_button(
+            "⬇️ Download PDF File",
+            data=st.session_state["explorer_pdf_bytes"],
+            file_name="groww_sip_records_export.pdf",
+            mime="application/pdf",
+            use_container_width=True,
+        )
 
     if not records:
         st.info("No records match the current filters.")

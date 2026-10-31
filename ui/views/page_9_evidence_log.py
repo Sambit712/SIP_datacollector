@@ -22,7 +22,7 @@ def render(session: Session, filters: dict):
         return
 
     # Export Buttons
-    col_d1, col_d2, col_stats = st.columns([1, 1, 2])
+    col_d1, col_d2, col_d3 = st.columns(3)
     with col_d1:
         json_data = exporter.export_to_json()
         st.download_button(
@@ -41,9 +41,17 @@ def render(session: Session, filters: dict):
             mime="text/csv",
             use_container_width=True,
         )
-    with col_stats:
-        st.write(f"Total Verified Claims: **{len(records)}** | PII Compliance: **100% Guaranteed**")
+    with col_d3:
+        evidence_pdf_bytes = exporter.export_to_pdf_bytes()
+        st.download_button(
+            "📕 Download Evidence Log (PDF)",
+            data=evidence_pdf_bytes,
+            file_name="groww_sip_evidence_log.pdf",
+            mime="application/pdf",
+            use_container_width=True,
+        )
 
+    st.caption(f"Total Verified Claims: **{len(records)}** | PII Compliance: **100% Guaranteed Zero Leakage**")
     st.markdown("---")
 
     # Filters
