@@ -1,0 +1,30 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment and sensitive credentials (DO NOT COMMIT)
+.env
+.env.local
+*.key
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local database (can be regenerated with seed_data.py)
+data/*.sqlite
+data/*.sqlite3
+data/*.db
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db

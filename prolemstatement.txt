@@ -1,0 +1,746 @@
+# PROJECT REQUIREMENTS DOCUMENT
+# AI DISCOVERY ENGINE — GROWW SIP CONTINUATION RESEARCH
+
+## 1. Project Overview
+
+Build an AI-powered Product Discovery and Research Engine that helps a Product Manager systematically identify, collect, analyse, validate and prioritise user problems related to mutual fund investing, specifically SIP (Systematic Investment Plan) discontinuation among first-time investors.
+
+The research will focus on Groww as the target investment platform.
+
+The primary purpose of this application is to discover why first-time mutual fund investors discontinue or struggle to maintain their SIPs within the first 12 months of starting their investment.
+
+The application should collect information from multiple sources, including:
+
+- Reddit discussions and public community forums.
+- Google Play Store and Apple App Store reviews.
+- Groww's official help documentation and product pages.
+- SEBI reports and investor surveys.
+- AMFI reports and mutual fund industry statistics.
+- Financial news articles and research publications.
+- User interviews and interview transcripts.
+- User surveys and questionnaire responses.
+- Manually uploaded research documents and datasets.
+
+The system must use AI to identify recurring complaints, extract relevant evidence, group similar issues, analyse user sentiment and identify potential product opportunities.
+
+It should function as a research assistant for a Product Manager rather than a general-purpose chatbot.
+
+---
+
+## 2. The Business Problem
+
+The broader product assignment aims to increase the percentage of first-time mutual fund investors whose SIP remains active 12 months after their first SIP begins.
+
+For this assignment, an SIP is considered active if at least one instalment has been successfully processed during the preceding 30 days.
+
+First-time investors may encounter difficulties maintaining recurring investments because of changing financial circumstances, unexpected expenses, payment failures, confusion about investment mechanisms, unrealistic return expectations, market uncertainty or other personal and product-related challenges.
+
+However, the actual reasons behind SIP discontinuation should not be assumed beforehand.
+
+There may be several competing explanations:
+
+1. Cash-flow mismatch: Investors may commit to SIP amounts without properly accounting for essential expenses, loan repayments, savings and unexpected financial obligations.
+
+2. Payment and mandate friction: AutoPay failures, mandate approval problems, insufficient balance, technical issues or confusing payment recovery processes may interrupt contributions.
+
+3. Investment expectation mismatch: Investors may expect returns sooner than they realistically occur or become disappointed by investment performance.
+
+4. Market-related anxiety: Investors may become uncomfortable during market declines or periods of volatility.
+
+5. Lack of financial understanding: New investors may struggle to understand SIP mechanics, statements, investment values and the difference between an SIP payment failure and a decline in portfolio value.
+
+6. Changing financial priorities: Investors may redirect money towards education, housing, family responsibilities, loans or other personal goals.
+
+7. Product usability and trust: Confusing workflows, unclear information, support problems or a lack of confidence in the investment experience may influence decisions.
+
+The research engine must investigate all these possibilities without automatically prioritising cash-flow mismatch merely because it is the proposed direction of the initial product concept.
+
+### Central research problem statement
+
+First-time mutual fund investors may discontinue or struggle to maintain SIPs for several financial, behavioural, educational and product-related reasons. However, the underlying causes, their relative importance and the points at which they occur in the investment journey are not always clearly understood.
+
+The challenge is to build an AI-powered discovery system that consolidates evidence from multiple sources, identifies recurring user problems, distinguishes actual user experiences from assumptions, evaluates the strength of evidence and helps Product Managers prioritise the most significant opportunities for improving 12-month SIP continuation.
+
+---
+
+## 3. Primary Objective
+
+Build a functional AI Discovery Engine that can:
+
+1. Collect research data from multiple sources.
+2. Extract relevant user complaints, observations and market findings.
+3. Identify recurring problems and classify them into meaningful categories.
+4. Detect similarities between feedback from different platforms.
+5. Separate actual user problems from general opinions and assumptions.
+6. Identify potential root causes behind SIP discontinuation.
+7. Compare competing problem hypotheses.
+8. Rank product opportunities based on evidence strength, frequency, severity, impact and feasibility.
+9. Generate an evidence-backed Product Manager research report.
+10. Maintain an auditable evidence log showing where every important finding originated.
+
+The engine should help answer:
+
+**What are the most important problems first-time Groww investors face when starting, managing and maintaining their SIPs, and which of these problems offers the strongest opportunity for product intervention?**
+
+---
+
+# 4. DATA COLLECTION ENGINE
+
+Build a central source ingestion system with multiple ways to collect research material.
+
+### A. Reddit Collection
+
+The system should support collecting publicly accessible discussions relevant to:
+
+- Groww SIP problems.
+- Groww AutoPay failures.
+- SIP cancellation and discontinuation.
+- Mutual fund investment difficulties.
+- Failed SIP instalments.
+- Investment anxiety and market losses.
+- First-time investor experiences.
+- Monthly salary and investment affordability.
+- Users struggling with unexpected expenses.
+- User experiences with mutual fund applications.
+
+Search should support multiple keywords and combinations.
+
+Example search queries:
+
+- "Groww SIP failed"
+- "Groww AutoPay issue"
+- "Unable to continue SIP"
+- "Why did you stop your SIP?"
+- "SIP insufficient balance"
+- "Monthly salary and SIP investment"
+- "Unexpected expenses and investments"
+- "First time mutual fund investor problems"
+- "Groww customer support SIP complaint"
+
+Requirements:
+
+- Capture the discussion title.
+- Capture the source URL.
+- Capture publication date when available.
+- Capture relevant post or comment text.
+- Identify the platform and subreddit.
+- Extract relevant complaints or observations.
+- Preserve a link to the original discussion.
+
+Support official APIs, permitted public retrieval methods and manual URL or CSV imports.
+
+Do not bypass authentication, paywalls, access restrictions or platform terms. Where automated collection is unavailable, provide manual import functionality.
+
+### B. App Store Review Collection
+
+Collect or import reviews for Groww from:
+
+- Google Play Store.
+- Apple App Store.
+
+Classify reviews into:
+
+- SIP-related complaints.
+- Payment failures.
+- AutoPay and mandate problems.
+- App usability.
+- User interface confusion.
+- Customer support.
+- Investment tracking.
+- Portfolio information.
+- Trust and reliability.
+- Positive user experiences.
+
+Capture the review's date, rating, text, platform and URL or available review identifier.
+
+Preserve both positive and negative reviews to prevent the research from becoming biased towards complaints.
+
+### C. Official Documentation Collection
+
+Create a dedicated source category for:
+
+**Groww**
+- SIP setup documentation.
+- SIP modification and skipping instructions.
+- AutoPay documentation.
+- SIP failure troubleshooting.
+- Step-up SIP documentation.
+- Mutual fund product features.
+- Groww's published investment guidance.
+
+**SEBI**
+- Investor Survey reports.
+- Investor behaviour research.
+- Market participation statistics.
+- Relevant regulatory publications.
+
+**AMFI**
+- Monthly SIP statistics.
+- SIP contribution data.
+- SIP discontinuation and completed-tenure statistics.
+- Mutual fund industry reports.
+
+Official sources should be treated differently from personal opinions.
+
+For example, Groww documentation can establish that a particular payment failure mechanism exists. It cannot establish how frequently investors discontinue SIPs because of it.
+
+### D. News and Research Articles
+
+Collect relevant articles and reports about:
+
+- SIP discontinuation trends in India.
+- Changes in mutual fund investor behaviour.
+- Investor retention.
+- Investment participation.
+- Market-related investment anxiety.
+- First-time investor challenges.
+- Financial literacy.
+- Mutual fund application experiences.
+
+Store the article title, publisher, publication date, URL and relevant supporting excerpts.
+
+### E. User Interviews and Surveys
+
+Create a manual research-import section.
+
+Allow the Product Manager to:
+
+- Upload CSV files.
+- Upload interview transcripts.
+- Paste interview notes.
+- Add individual observations.
+- Add survey responses.
+- Tag each respondent using an anonymous identifier.
+- Record whether the user is a first-time investor.
+- Record whether the user's SIP is active, paused or discontinued, where known.
+- Identify the user's reported reason for considering or stopping an SIP.
+
+Do not invent interview responses or survey statistics.
+
+Keep user research separate from public internet feedback so the system can distinguish the evidence types.
+
+Never request or store PAN numbers, bank credentials, account numbers or identifiable portfolio screenshots.
+
+---
+
+# 5. AI ANALYSIS ENGINE
+
+This is the core intelligence layer of the application.
+
+After data collection, the system should analyse the collected information using an LLM and, where useful, semantic embeddings.
+
+### A. Relevance Filtering
+
+Not every source discussing mutual funds is relevant to the assignment.
+
+Classify each record into:
+
+- Highly relevant.
+- Partially relevant.
+- Not relevant.
+
+Relevant records should concern SIP initiation, management, affordability, payment problems, investment understanding, user retention or discontinuation.
+
+Exclude unrelated stock-trading discussions, generic financial advertisements, promotional posts and irrelevant conversations.
+
+Provide an option for the researcher to restore incorrectly excluded records.
+
+### B. Complaint and Evidence Extraction
+
+For every relevant record, extract:
+
+- Main problem reported.
+- Supporting excerpt.
+- User context, if available.
+- User's intended action.
+- Whether the user actually experienced the problem or is only asking a hypothetical question.
+- Whether the record mentions Groww specifically.
+- Whether an SIP is active, paused, failed or discontinued.
+- Whether the reason for discontinuation is explicitly stated.
+- Possible underlying cause.
+- Severity of the reported issue, where supported by the text.
+
+Do not infer that a user discontinued their SIP unless the source actually establishes it.
+
+### C. Issue Classification
+
+Build a flexible classification system with the following initial categories:
+
+1. Financial affordability and cash-flow mismatch.
+2. Unexpected expenses and financial emergencies.
+3. SIP payment failures.
+4. AutoPay and mandate difficulties.
+5. SIP modification and cancellation difficulties.
+6. Investment expectation mismatch.
+7. Market volatility and investment anxiety.
+8. Lack of investment understanding.
+9. Confusing statements and portfolio information.
+10. App usability and navigation.
+11. Customer support and trust.
+12. Changes in financial goals and responsibilities.
+13. Other or unclassified issues.
+
+Allow the AI to suggest additional themes when new patterns appear.
+
+Do not force every complaint into an existing category.
+
+### D. Semantic Clustering
+
+Use semantic similarity to identify different ways of expressing the same underlying problem.
+
+Example:
+
+- "My SIP failed because my salary arrived late."
+- "My account didn't have enough balance on the debit date."
+- "I forgot that my loan EMI was scheduled before my SIP."
+- "I had to use the money for an unexpected expense."
+
+These may be related to cash-flow and payment timing, but they are not necessarily the same root cause.
+
+The system should distinguish:
+
+- Cash-flow shortage.
+- Debit-date mismatch.
+- Missed payment.
+- Unexpected financial obligation.
+- Technical or mandate failure.
+
+Similar complaints should be grouped while preserving their individual source records.
+
+### E. Root Cause Analysis
+
+For every major cluster, generate:
+
+- Theme name.
+- Description of the problem.
+- Number of supporting records.
+- Relevant sources.
+- Representative excerpts.
+- User segments involved.
+- Possible causes.
+- Alternative explanations.
+- Confidence and evidence limitations.
+- Potential product implications.
+
+The AI should distinguish between:
+
+**Observed evidence:** What the user or source explicitly states.
+
+**Interpretation:** What the researcher believes may explain the observation.
+
+**Hypothesis:** What still needs validation.
+
+Do not present interpretations as confirmed facts.
+
+---
+
+# 6. PRODUCT MANAGER DISCOVERY QUESTIONS
+
+The engine should organise findings around six core questions.
+
+### Q1. Why do users begin investing?
+
+Identify motivations such as:
+
+- Long-term savings.
+- Wealth creation.
+- Financial goals.
+- Recommendations from friends or family.
+- Social influence.
+- Tax-related considerations.
+
+### Q2. Why do users struggle to maintain an SIP?
+
+Investigate financial, behavioural, technical and product-related obstacles.
+
+### Q3. What prevents users from understanding or managing their investments?
+
+Identify difficulties involving:
+
+- SIP setup.
+- Instalment schedules.
+- Payment status.
+- Statements.
+- Portfolio values.
+- Investment terminology.
+- App navigation.
+
+### Q4. What happens when a user's financial circumstances change?
+
+Investigate:
+
+- Salary reductions.
+- Job changes.
+- Irregular income.
+- Increased expenses.
+- Loan repayments.
+- Unexpected expenses.
+- Major personal financial responsibilities.
+
+### Q5. Where does Groww contribute to the user experience?
+
+Analyse documented product functionality and actual user experiences.
+
+Identify whether problems originate from:
+
+- Investment payment mechanisms.
+- App workflows.
+- Insufficient explanations.
+- External banking or mandate systems.
+- Investment-related expectations.
+- Factors outside Groww's control.
+
+### Q6. Which product opportunity should be prioritised?
+
+Compare potential solutions according to:
+
+- Frequency in the collected evidence.
+- Severity of the user problem.
+- Impact on SIP continuation.
+- Strength and quality of supporting evidence.
+- Feasibility of building a solution.
+- Ability to address the problem without creating financial harm.
+
+---
+
+# 7. OPPORTUNITY PRIORITISATION ENGINE
+
+Implement a Product Manager dashboard that ranks discovered problems.
+
+Provide a transparent scoring framework with the following dimensions:
+
+1. Frequency: How often does the issue appear in the collected dataset?
+2. Severity: How serious is the reported problem?
+3. Business relevance: Could the issue plausibly affect 12-month SIP continuation?
+4. Evidence confidence: How reliable and corroborated is the evidence?
+5. Actionability: Can a product intervention reasonably address it?
+6. Implementation effort: How difficult would the proposed intervention be?
+
+Allow the researcher to change scoring weights.
+
+Show the individual scores and explanation behind every ranking.
+
+A theme appearing frequently in 100 Reddit comments should not automatically receive a higher score than an issue supported by a reliable SEBI report or strong first-hand user evidence.
+
+Do not confuse the percentage of collected records belonging to a category with the percentage of all Groww users experiencing that problem.
+
+---
+
+# 8. SOURCE QUALITY AND EVIDENCE VALIDATION
+
+Build an Evidence Quality system.
+
+Every source should have:
+
+- Source type.
+- Publisher or platform.
+- Publication date.
+- Collection date.
+- URL or source identifier.
+- Geographic relevance.
+- Relevant reporting period.
+- Sample size and denominator, where available.
+- Exact supporting excerpt.
+- Extraction method.
+- Verification status.
+
+Assign transparent evidence labels:
+
+**Strong:** Official reports, verified documentation or multiple corroborating first-hand sources.
+
+**Moderate:** Credible secondary research, repeated individual reports or a limited user-research sample.
+
+**Weak:** Isolated anecdotes, unsupported assertions or ambiguous statements.
+
+These labels should be supported by visible reasoning. Do not automatically equate source popularity with reliability.
+
+Where sources contradict each other, retain both and highlight the disagreement.
+
+The system should make it possible to open the original source from every finding.
+
+---
+
+# 9. AI EVALUATION AND GOLDEN TEST SET
+
+Do not treat AI-generated analysis as automatically correct.
+
+Build an evaluation module to test whether the system extracts and classifies user problems accurately.
+
+Create a manually labelled golden dataset containing approximately 20–30 representative records initially.
+
+For every record, manually identify:
+
+- Is the record relevant?
+- What is the main issue?
+- Which issue category applies?
+- Is the user describing a real experience?
+- Is the SIP status known?
+- Does the source establish discontinuation?
+- What is the explicitly stated reason?
+- What information is missing?
+
+Compare the AI's results against the human-labelled answers.
+
+Display:
+
+- Classification accuracy.
+- Precision and recall where meaningful.
+- Confusion matrix.
+- Incorrect classifications.
+- Missed relevant issues.
+- False-positive records.
+- Extraction failures.
+- Unsupported AI claims.
+
+Where two human reviewers are available, calculate inter-annotator agreement and resolve disagreements. Do not claim inter-annotator agreement from a single person's repeated labels.
+
+The system should allow:
+
+- Human correction of AI classifications.
+- Re-running the analysis after corrections.
+- Comparing before-and-after results.
+- Recording at least 2–3 meaningful AI corrections.
+- Exporting the corrected golden set.
+
+The initial small golden set should be described as an exploratory evaluation sample, not proof of generalised model accuracy.
+
+---
+
+# 10. USER INTERFACE AND APPLICATION MODULES
+
+Create a professional Product Manager research dashboard with the following pages.
+
+### Page 1: Research Dashboard
+
+Display:
+
+- Total records collected.
+- Records by source.
+- Relevant records.
+- Excluded records.
+- Total extracted issues.
+- Identified problem clusters.
+- Evidence verification status.
+- Last collection date.
+
+Include filters for dates, platforms and source types.
+
+### Page 2: Source Explorer
+
+Display all collected records in a searchable table.
+
+Allow users to:
+
+- Search keywords.
+- Filter by source.
+- View original URLs.
+- Read extracted excerpts.
+- View source metadata.
+- Edit classifications.
+- Mark records as relevant or irrelevant.
+- Remove duplicates.
+- Export records.
+
+### Page 3: AI Analysis
+
+Display issue categories and clusters.
+
+For each cluster, show:
+
+- Description.
+- Supporting source count.
+- Representative evidence.
+- Relevant user segments.
+- Positive and negative counterevidence.
+- AI-generated interpretation.
+- Human verification status.
+
+### Page 4: SIP Discontinuation Analysis
+
+Organise findings according to:
+
+- Before starting an SIP.
+- During SIP setup.
+- During regular contributions.
+- When an instalment fails.
+- When financial circumstances change.
+- When considering pausing or discontinuing.
+- After discontinuation.
+
+This should help identify where in the user journey the biggest difficulties occur.
+
+### Page 5: Competitive Research
+
+Create a dedicated Groww research section.
+
+Track:
+
+- Existing features.
+- Documented limitations.
+- Payment workflows.
+- SIP management.
+- User-reported complaints.
+- Customer support experiences.
+- Unverified assumptions.
+- Potential product opportunities.
+
+### Page 6: Research Questions and Insights
+
+Present answers to the six Product Manager discovery questions.
+
+Every generated insight must link to its supporting evidence.
+
+### Page 7: Opportunity Prioritisation
+
+Display ranked problems with their evidence, scoring dimensions and rationale.
+
+Allow the Product Manager to change the priority and add notes.
+
+### Page 8: Evaluation and Golden Set
+
+Display AI performance, manually labelled examples, corrected outputs and unresolved failures.
+
+### Page 9: Evidence Log
+
+Create a complete research audit trail with:
+
+- Record ID.
+- Source URL.
+- Source type.
+- Extracted claim.
+- Exact quotation or supporting excerpt.
+- AI interpretation.
+- Human correction.
+- Confidence.
+- Validation status.
+
+Provide CSV and JSON exports.
+
+Also create a read-only, shareable evidence-log view that can be used for the Product Manager case-study submission. Interview notes and personal data must never be exposed publicly.
+
+### Page 10: Report Generator
+
+Allow the Product Manager to export a research report covering:
+
+1. Business context.
+2. Research methodology.
+3. Source inventory.
+4. User feedback findings.
+5. Main friction clusters.
+6. Target user segments.
+7. Root cause hypotheses.
+8. Competitive analysis.
+9. Evidence strength and limitations.
+10. Prioritised product opportunities.
+11. Unresolved questions.
+12. Recommended next research steps.
+
+Support PDF, CSV and Markdown exports where appropriate.
+
+---
+
+# 11. TECHNICAL REQUIREMENTS
+
+Build a modular application that can be developed and maintained easily.
+
+Before writing code, inspect the existing project folder and identify whether there is already a working application. Preserve and improve existing functionality instead of unnecessarily rebuilding everything.
+
+Suggested architecture:
+
+- Frontend: A clean, responsive research dashboard.
+- Backend: Python-based API or an appropriate existing backend.
+- Database: SQLite for an initial local MVP, with a migration path to PostgreSQL.
+- Data processing: Python and pandas.
+- AI: Configurable LLM provider using environment variables for API keys.
+- Semantic analysis: Configurable embedding model and vector search.
+- Data exchange: CSV and JSON.
+- Source retrieval: Modular connectors for official APIs, permitted public sources and manual imports.
+
+Keep AI provider credentials in environment variables. Never hardcode API keys or expose them in the browser.
+
+Implement:
+
+- Error handling.
+- Logging.
+- Duplicate detection.
+- Pagination.
+- Source retrieval status.
+- Retry handling.
+- Configuration management.
+- Input validation.
+- Database persistence.
+- Basic automated tests.
+
+The application must have a deterministic fallback when an LLM API key is unavailable.
+
+Users must still be able to import data, search, classify records manually and maintain their evidence log.
+
+---
+
+# 12. IMPORTANT RESEARCH AND AI SAFETY REQUIREMENTS
+
+These are mandatory:
+
+1. Never invent Reddit posts, user quotations, survey responses, statistics or research sources.
+
+2. Never claim that a source was verified unless its content was actually retrieved or independently reviewed.
+
+3. Preserve source URLs and publication dates.
+
+4. Clearly distinguish official statistics from individual user opinions.
+
+5. Never treat the number of discontinued SIP accounts as the number of unique investors who deliberately stopped investing.
+
+6. Never generalise SEBI-wide findings into Groww-specific behaviour.
+
+7. Never treat Reddit frequency as a representative estimate of the Indian investor population.
+
+8. Keep cash-flow mismatch as one hypothesis among several. The research engine must be capable of finding that another issue is more important.
+
+9. Do not generate fund recommendations, stock recommendations, investment predictions or personalised securities advice.
+
+10. Do not expose private interview information or sensitive financial data.
+
+11. Use AI-generated summaries only when the supporting evidence is accessible.
+
+12. Provide a clear explanation of missing data, retrieval failures and uncertainty.
+
+---
+
+# 13. EXPECTED FINAL DELIVERABLES
+
+Build and provide:
+
+1. A fully functioning AI Discovery Engine web application.
+2. A dashboard for browsing collected user feedback.
+3. A configurable data-ingestion system.
+4. An AI-powered issue extraction and classification pipeline.
+5. A semantic clustering and opportunity-prioritisation module.
+6. A manually editable golden evaluation set.
+7. An AI performance and failure-analysis dashboard.
+8. A searchable evidence log with source links.
+9. CSV and JSON export functionality.
+10. A PDF research report generator.
+11. A setup guide explaining how to configure API keys and run the system.
+12. A demonstration dataset clearly labelled as synthetic wherever real evidence has not been collected.
+13. Automated tests for the important data-processing and classification workflows.
+
+The application should be designed so that a Product Manager with limited coding experience can operate it through the interface.
+
+---
+
+# 14. DEFINITION OF SUCCESS
+
+The AI Discovery Engine will be considered successful when a Product Manager can:
+
+1. Import or collect research data from multiple sources.
+2. Inspect and verify individual records.
+3. Identify meaningful recurring problems.
+4. Compare competing explanations for SIP discontinuation.
+5. Trace every important finding back to its original source.
+6. Correct AI mistakes and evaluate classification quality.
+7. Identify evidence gaps.
+8. Prioritise a product opportunity with a clear rationale.
+9. Export a research report and an auditable evidence log.
+
+The final output

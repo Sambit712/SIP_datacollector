@@ -1,0 +1,30 @@
+# Python Version: >= 3.10
+
+# Web UI & Presentation Layer
+streamlit>=1.40.0
+fastapi>=0.115.0
+uvicorn>=0.30.0
+python-multipart>=0.0.18
+starlette>=1.10.0
+
+# Data Processing & Persistence
+pandas>=2.1.0
+numpy>=1.26.0
+sqlalchemy>=2.0.0
+pydantic>=2.6.0
+pydantic-settings>=2.1.0
+python-dotenv>=1.0.0
+pyyaml>=6.0.1
+
+# AI & NLP Inference
+groq>=0.11.0
+scikit-learn>=1.4.0
+sentence-transformers>=2.3.0
+
+# Reporting & Export
+reportlab>=4.0.0
+markdown>=3.5.0
+
+# Testing & Quality Assurance
+pytest>=8.0.0
+pytest-cov>=4.1.0

@@ -1,0 +1,95 @@
+version: "1.0"
+description: "Initial 13-category taxonomy for mutual fund SIP discontinuation research on Groww"
+
+categories:
+  - id: "cat_01"
+    code: "cash_flow_mismatch"
+    name: "Financial Affordability & Cash-Flow Mismatch"
+    description: "Investor commits to SIP dates or amounts without accounting for monthly salary delays, essential expenditures, rent, or loan EMIs."
+    keywords: ["salary late", "delayed salary", "cash flow", "affordability", "salary date", "no money left", "month end", "budget crunch", "insufficient funds"]
+    is_predefined: true
+
+  - id: "cat_02"
+    code: "unexpected_expenses"
+    name: "Unexpected Expenses & Financial Emergencies"
+    description: "Sudden financial shocks such as medical emergencies, unplanned travel, urgent repairs, or family obligations requiring capital diversion."
+    keywords: ["medical emergency", "hospital", "sudden expense", "emergency fund", "unplanned expenditure", "urgent cash", "family emergency"]
+    is_predefined: true
+
+  - id: "cat_03"
+    code: "payment_failures"
+    name: "SIP Payment Failures"
+    description: "Failed SIP instalments caused by bank downtime, insufficient balance penalties (e.g. ₹295 bounce fees), debit timeouts, or gateway errors."
+    keywords: ["payment failed", "debit failed", "bounce charges", "bounce fee", "transaction declined", "bank error", "failed instalment", "penalty charged"]
+    is_predefined: true
+
+  - id: "cat_04"
+    code: "autopay_mandate"
+    name: "AutoPay & Mandate Difficulties"
+    description: "Friction setting up or maintaining recurring mandates: NPCI e-mandate rejection, NetBanking OTP issues, UPI AutoPay authorization failure, or bank mandate expiry."
+    keywords: ["mandate", "autopay", "mandate rejected", "mandate failure", "upi autopay", "e-mandate", "nach mandate", "npci", "md01", "otp failed", "mandate pending", "autopay setup"]
+    is_predefined: true
+
+  - id: "cat_05"
+    code: "modification_cancellation"
+    name: "SIP Modification & Cancellation Difficulties"
+    description: "Problems attempting to pause an SIP, change instalment dates, alter contribution amounts, or cancel active mandates in the application."
+    keywords: ["cannot pause sip", "unable to cancel", "modify sip", "change sip date", "skip instalment", "stop sip", "cancellation error", "pause limit"]
+    is_predefined: true
+
+  - id: "cat_06"
+    code: "expectation_mismatch"
+    name: "Investment Expectation Mismatch"
+    description: "Unrealistic short-term return expectations, disillusionment with low or flat growth during the first 12 months, or comparison with fixed deposits."
+    keywords: ["no returns", "returns too low", "negative return", "expected higher", "loss after 6 months", "fd gives better", "waste of time"]
+    is_predefined: true
+
+  - id: "cat_07"
+    code: "volatility_anxiety"
+    name: "Market Volatility & Investment Anxiety"
+    description: "Psychological discomfort, panic, or fear triggered by market dips, portfolio drawdowns, or broader economic volatility leading to defensive cancellations."
+    keywords: ["market crash", "loss in portfolio", "scared of loss", "market falling", "red portfolio", "panic", "stop loss", "anxiety", "fear"]
+    is_predefined: true
+
+  - id: "cat_08"
+    code: "lack_understanding"
+    name: "Lack of Investment Understanding"
+    description: "Confusion regarding how mutual funds and SIPs work, including NAV calculations, compounding periods, units allotment, and SIP vs lump sum differences."
+    keywords: ["how sip works", "nav confusion", "don't understand units", "compound interest", "folio number", "first time investing", "confusing terms"]
+    is_predefined: true
+
+  - id: "cat_09"
+    code: "confusing_statements"
+    name: "Confusing Statements & Portfolio Information"
+    description: "Difficulty reading account statements, tracking XIRR/CAGR, reconciling debited amounts with credited units, or deciphering order statuses."
+    keywords: ["statement confusing", "xirr wrong", "units not reflected", "order pending", "reconciliation", "cagr confusing", "tax statement"]
+    is_predefined: true
+
+  - id: "cat_10"
+    code: "app_usability"
+    name: "App Usability & Navigation"
+    description: "Groww application user experience hurdles: clunky navigation, confusing menu placement, app crashes, slow loading, or non-intuitive workflows."
+    keywords: ["app crashing", "ui confusing", "bad navigation", "cant find sip", "screen stuck", "slow app", "login issue", "buggy interface"]
+    is_predefined: true
+
+  - id: "cat_11"
+    code: "support_trust"
+    name: "Customer Support & Trust"
+    description: "Unresponsive customer support, bot loops without human escalation, delayed refund resolution, or lack of confidence in platform integrity."
+    keywords: ["no support response", "customer care useless", "bot useless", "raised ticket no reply", "money stuck", "lost trust", "fraud alert"]
+    is_predefined: true
+
+  - id: "cat_12"
+    code: "goal_changes"
+    name: "Changes in Financial Goals & Responsibilities"
+    description: "Redirection of discretionary funds toward major life transitions: marriage, education, buying a house/vehicle, parent medical care, or career shift."
+    keywords: ["wedding expenses", "higher studies", "bought house", "buying car", "personal loan", "family commitment", "quit job", "changed goals"]
+    is_predefined: true
+
+  - id: "cat_13"
+    code: "unclassified"
+    name: "Other / Unclassified"
+    description: "Emergent complaints, edge cases, or multi-faceted issues that do not cleanly fit the 12 standard categories."
+    keywords: ["other", "miscellaneous", "unknown"]
+    is_predefined: true
+
