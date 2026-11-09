@@ -14,7 +14,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 import streamlit as st
 from config.settings import get_settings
-from src.models.database import get_session, RawRecord, IssueCluster
+from src.models.database import get_session, init_db, RawRecord, IssueCluster
 from src.nlp.pipeline import AnalysisPipeline
 from src.prioritization.scorer import OpportunityScorer
 
@@ -42,7 +42,16 @@ st.set_page_config(
 
 def main():
     settings = get_settings()
+    init_db()
     session = get_session()
+
+    # Self-healing database check: Seed initial records if database is empty on fresh deploy
+    if session.query(RawRecord).count() == 0:
+        try:
+            from data.seed_data import seed_all
+            seed_all()
+        except Exception as e:
+            st.error(f"Database initialization warning: {e}")
 
     # --- Sidebar Header & Status ---
     st.sidebar.title("📈 Groww SIP Engine")

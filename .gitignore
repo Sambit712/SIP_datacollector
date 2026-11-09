@@ -19,8 +19,9 @@ env/
 .coverage
 htmlcov/
 
-# Local database (can be regenerated with seed_data.py)
+# Local database (pre-seeded app database is tracked for zero-setup cloud deploy)
 data/*.sqlite
+!data/app_database.sqlite
 data/*.sqlite3
 data/*.db
 *.log
